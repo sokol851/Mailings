@@ -14,4 +14,13 @@
     <div class="container-fluid">
         <a class="navbar-brand" href="#">На главную</a>
     </div>
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'mailings:mailing_list' %}">Рассылки</a>
+    </div>
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'mailings:message_list' %}">Сообщения</a>
+    </div>
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'mailings:client_list' %}">Клиенты</a>
+    </div>
 </nav>
