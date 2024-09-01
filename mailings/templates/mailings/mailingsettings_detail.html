@@ -1,0 +1,26 @@
+{% extends 'mailings/base.html' %}
+{% block content %}
+
+<div class="card mb-3">
+    <div class="card-body">
+        <center>
+            <div class="row">
+                <div class="col-12">
+                    <h2>{{object.name}}</h2>
+                </div>
+                <div class="col-12 mt-3">
+                    <p>Начало рассылки: {{ object.start_at }}</p>
+                    <p>Конец рассылки: {{ object.stop_at }}</p>
+                    <p>Периодичность: {{ object.periodicity }}</p>
+                    <p>Статус: {{ object.status }}</p>
+                    <p>Тема сообщения: {{ object.message.theme }}</p>
+                    <p>Сообщение: {{ object.message.body }}</p>
+                    <p>Клиенты: {{ object.client }}</p>
+                    <p>Создатель: {{ object.creator }}</p>
+                </div>
+                <a href="{% url 'mailings:mailing_list' %}" class="btn btn-warning form-control">Назад</a>
+            </div>
+        </center>
+    </div>
+</div>
+{% endblock %}

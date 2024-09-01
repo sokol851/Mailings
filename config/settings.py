@@ -39,6 +39,7 @@ INSTALLED_APPS = [
 
     'mailings',
     'users',
+    'django_apscheduler',
 ]
 
 MIDDLEWARE = [
@@ -147,12 +148,16 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 SITE_URL = config("SITE_URL")
 
-# CACHE_ENABLED = config('CACHE_ENABLED') == "True"
-#
-# if CACHE_ENABLED:
-#     CACHES = {
-#         "default": {
-#             "BACKEND": "django.core.cache.backends.redis.RedisCache",
-#             "LOCATION": config('LOCATION_REDIS'),
-#         }
-#     }
+CACHE_ENABLED = config('CACHE_ENABLED') == "True"
+
+if CACHE_ENABLED:
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.redis.RedisCache",
+            "LOCATION": config('LOCATION_REDIS'),
+        }
+    }
+
+APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
+
+

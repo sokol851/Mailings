@@ -18,7 +18,7 @@ class StyleFormMixin:
 
 
 class MessageForm(StyleFormMixin, forms.ModelForm):
-    """ Форма для версий """
+    """ Форма для сообщений """
 
     class Meta:
         model = Message
@@ -26,15 +26,40 @@ class MessageForm(StyleFormMixin, forms.ModelForm):
 
 
 class ClientForm(StyleFormMixin, forms.ModelForm):
-    """ Форма для версий """
+    """ Форма для клиентов """
+    list_stop_word = ['Не указано', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0']
 
     class Meta:
         model = Client
         fields = '__all__'
 
+    def clean_first_name(self):
+        """ Фильтрация запрещённых слов в названии """
+        clean_data = self.cleaned_data['first_name']
+
+        if clean_data is None:
+            raise forms.ValidationError('Имя не может быть пустым или иметь цифры')
+        else:
+            for word in self.list_stop_word:
+                if word.lower() in clean_data.lower():
+                    raise forms.ValidationError('Имя не может быть пустым или иметь цифры')
+        return clean_data
+
+    def clean_last_name(self):
+        """ Фильтрация запрещённых слов в названии """
+        clean_data = self.cleaned_data['last_name']
+
+        if clean_data is None:
+            raise forms.ValidationError('Фамилия не может быть пустым или иметь цифры')
+        else:
+            for word in self.list_stop_word:
+                if word.lower() in clean_data.lower():
+                    raise forms.ValidationError('Фамилия не может быть пустым или иметь цифры')
+        return clean_data
+
 
 class MailingSettingsForm(StyleFormMixin, forms.ModelForm):
-    """ Форма для версий """
+    """ Форма для рассылок """
 
     class Meta:
         model = MailingSettings

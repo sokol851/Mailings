@@ -15,9 +15,7 @@ class Client(models.Model):
     comment = models.CharField(max_length=50, **NULLABLE, default='Не указано', verbose_name='Комментарий')
 
     def __str__(self):
-        return (f'ФИО: {self.first_name} {self.last_name} {self.patronymic}\n'
-                f'Email: {self.email}\n'
-                f'Комментарий: {self.comment}')
+        return f'{self.email}'
 
     class Meta:
         verbose_name = 'Клиент'

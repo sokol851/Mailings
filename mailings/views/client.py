@@ -14,6 +14,19 @@ class ClientUpdateView(UpdateView):
     form_class = ClientForm
     success_url = reverse_lazy('mailings:client_list')
 
+    def form_valid(self, form):
+        user = form.save()
+        if user.first_name == '' or user.first_name is None:
+            user.first_name = 'Не указано'
+        if user.last_name == '' or user.last_name is None:
+            user.last_name = 'Не указано'
+        if user.patronymic == '' or user.patronymic is None:
+            user.patronymic = 'Не указано'
+        if user.comment == '' or user.comment is None:
+            user.comment = 'Не указано'
+        user.save()
+        return super().form_valid(form)
+
 
 class ClientCreateView(CreateView):
     model = Client
