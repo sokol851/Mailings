@@ -1,0 +1,25 @@
+{% extends 'mailings/base.html' %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <a href="{% url 'mailings:message_create'%}" type="button"
+                                   class="btn btn-dark form-control">Создать</a>
+        {% for object in object_list %}
+        <div class="col-4 mt-3">
+            <div class="card">
+                <div class="card-body">
+                    <p>Тема: {{ object.theme }}</p>
+                    <p>Сообщение: {{ object.body }}</p>
+                    <a href="{% url 'mailings:message_detail' object.pk %}" type="button"
+                                   class="btn btn-dark form-control mb-3">Открыть</a>
+                    <a href="{% url 'mailings:message_edit' object.pk %}" type="button"
+                                   class="btn btn-dark form-control mb-3">Редактировать</a>
+                    <a href="{% url 'mailings:message_delete' object.pk %}" type="button"
+                                   class="btn btn-dark form-control">Удалить</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
