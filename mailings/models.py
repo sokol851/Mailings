@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from django.db import models
 
@@ -41,23 +41,22 @@ class MailingSettings(models.Model):
 
     PERIODICITY_SET = ((EVERY_DAY, 'Каждый день'), (EVERY_WEEK, 'Каждую неделю'), (EVERY_MONTH, 'каждый месяц'))
 
-    CREATED = 'CREATED'
-    WORKS = 'WORKS'
-    FINISHED = 'FINISH'
+    CREATED = 'Создана'
+    WORKS = 'В работе'
+    FINISHED = 'Завершена'
 
     STATUS_SET = ((CREATED, 'Создана'), (WORKS, 'Работает'), (FINISHED, 'Завершена'))
 
     name = models.CharField(max_length=150, verbose_name='Название рассылки')
-
     start_at = models.DateTimeField(default=datetime.now, verbose_name='Начало рассылки')
-    stop_at = models.DateTimeField(**NULLABLE, verbose_name='Конец рассылки')
+    stop_at = models.DateTimeField(default=datetime.now()+timedelta(days=1), verbose_name='Конец рассылки')
+    next_send_time = models.DateTimeField(verbose_name='Время следующей отправки', **NULLABLE)
     periodicity = models.CharField(max_length=100, choices=PERIODICITY_SET, default=EVERY_DAY,
                                    verbose_name='Периодичность рассылки')
     status = models.CharField(max_length=100, choices=STATUS_SET, default=CREATED, verbose_name='Статус рассылки')
     message = models.ForeignKey(Message, on_delete=models.CASCADE, verbose_name='Сообщение',
                                 related_name='mailing_settings')
-
-    client = models.ManyToManyField(Client, verbose_name='Клиент', **NULLABLE, related_name='mailing_settings')
+    client = models.ManyToManyField(Client, verbose_name='Клиент', related_name='mailing_settings')
     creator = models.ForeignKey(User, max_length=150, **NULLABLE, on_delete=models.SET_NULL, verbose_name='Создатель')
 
     def __str__(self):
@@ -68,14 +67,15 @@ class MailingSettings(models.Model):
         verbose_name_plural = 'Рассылки'
         ordering = ['id']
 
+    def save(self, *args, **kwargs):
+        if not self.next_send_time:
+            self.next_send_time = self.start_at
+        super().save(*args, **kwargs)
+
 
 class MailingLog(models.Model):
     SUCCESS = 'SUCCESS'
     ERROR = 'ERROR'
-    # MAILING_STATUS_CHOICE = {
-    #     SUCCESS: 'Успешно',
-    #     ERROR: 'Ошибка'
-    # }
 
     MAILING_STATUS_CHOICE = ((SUCCESS, 'Успешно'), (ERROR, 'Ошибка'))
 

@@ -11,11 +11,12 @@
                 <div class="col-12 mt-3">
                     <p>Начало рассылки: {{ object.start_at }}</p>
                     <p>Конец рассылки: {{ object.stop_at }}</p>
+                    <p>Следующая рассылки: {{ object.next_send_time }}</p>
                     <p>Периодичность: {{ object.periodicity }}</p>
                     <p>Статус: {{ object.status }}</p>
                     <p>Тема сообщения: {{ object.message.theme }}</p>
                     <p>Сообщение: {{ object.message.body }}</p>
-                    <p>Клиенты: {{ object.client }}</p>
+                    <p>Клиенты: {{ object.client.all|join:', ' }}</p>
                     <p>Создатель: {{ object.creator }}</p>
                 </div>
                 <a href="{% url 'mailings:mailing_list' %}" class="btn btn-warning form-control">Назад</a>

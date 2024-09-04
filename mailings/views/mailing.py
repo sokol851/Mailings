@@ -2,7 +2,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, UpdateView, CreateView, DeleteView, DetailView
 
 from mailings.forms import MailingSettingsForm
-from mailings.models import MailingSettings, Client
+from mailings.models import MailingSettings
 
 
 class MailingSettingsListView(ListView):
