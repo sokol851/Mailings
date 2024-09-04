@@ -49,7 +49,7 @@ class MailingSettings(models.Model):
 
     name = models.CharField(max_length=150, verbose_name='Название рассылки')
     start_at = models.DateTimeField(default=datetime.now, verbose_name='Начало рассылки')
-    stop_at = models.DateTimeField(default=datetime.now()+timedelta(days=1), verbose_name='Конец рассылки')
+    stop_at = models.DateTimeField(default=datetime.now() + timedelta(days=1), verbose_name='Конец рассылки')
     next_send_time = models.DateTimeField(verbose_name='Время следующей отправки', **NULLABLE)
     periodicity = models.CharField(max_length=100, choices=PERIODICITY_SET, default=EVERY_DAY,
                                    verbose_name='Периодичность рассылки')
@@ -74,16 +74,16 @@ class MailingSettings(models.Model):
 
 
 class MailingLog(models.Model):
-    SUCCESS = 'SUCCESS'
-    ERROR = 'ERROR'
+    SUCCESS = 'Успешно'
+    ERROR = 'Ошибка'
 
     MAILING_STATUS_CHOICE = ((SUCCESS, 'Успешно'), (ERROR, 'Ошибка'))
 
     last_attempt = models.DateTimeField(auto_now_add=True, verbose_name='Последняя попытка')
     status_attempt = models.CharField(choices=MAILING_STATUS_CHOICE, max_length=150, verbose_name='Статус попытки')
     response = models.TextField(**NULLABLE, verbose_name='Ответ почтового сервера')
-    mailing = models.OneToOneField(MailingSettings, on_delete=models.CASCADE, verbose_name='Рассылка',
-                                   related_name='mailing_log')
+    mailing = models.ForeignKey(MailingSettings, on_delete=models.CASCADE, verbose_name='Рассылка',
+                                related_name='mailing_log')
 
     def __str__(self):
         return f'Статус на {self.last_attempt} - {self.status_attempt}.'

@@ -1,3 +1,4 @@
+import smtplib
 from datetime import datetime, timedelta
 
 import pytz
@@ -23,13 +24,18 @@ def service_send_mails():
             mailing.status = MailingSettings.WORKS
             mailing.save()
 
-            send_mail(
-                subject=mailing.message.theme,
-                message=mailing.message.body,
-                from_email=settings.EMAIL_HOST_USER,
-                recipient_list=[client.email for client in mailing.client.all()],
-                fail_silently=False
-            )
+            try:
+                response = send_mail(
+                    subject=mailing.message.theme,
+                    message=mailing.message.body,
+                    from_email=settings.EMAIL_HOST_USER,
+                    recipient_list=[client.email for client in mailing.client.all()],
+                    fail_silently=False
+                )
+
+                MailingLog.objects.create(status_attempt=MailingLog.SUCCESS, response=response, mailing=mailing)
+            except smtplib.SMTPException as error:
+                MailingLog.objects.create(status_attempt=MailingLog.ERROR, response=str(error), mailing=mailing)
 
             if mailing.periodicity == MailingSettings.EVERY_DAY:
                 mailing.next_send_time += timedelta(days=1)

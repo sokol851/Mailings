@@ -5,6 +5,7 @@ from mailings.apps import MailingsConfig
 from mailings.views.index import index
 from mailings.views.mailing import MailingSettingsListView, MailingSettingsUpdateView, MailingSettingsCreateView, \
     MailingSettingsDeleteView, MailingSettingsDetailView
+from mailings.views.mailing_log import MailingLogListView
 from mailings.views.message import MessageListView, MessageUpdateView, MessageCreateView, MessageDeleteView, \
     MessageDetailView
 from mailings.views.client import ClientListView, ClientUpdateView, ClientCreateView, ClientDeleteView, ClientDetailView
@@ -31,6 +32,6 @@ urlpatterns = [
     path("mailing_delete/<int:pk>", MailingSettingsDeleteView.as_view(), name="mailing_delete"),
     path("mailing_detail/<int:pk>", MailingSettingsDetailView.as_view(), name="mailing_detail"),
 
-    # path("log", MailingLogDetailView.as_view(), name="log_list"),
+    path("log_list", MailingLogListView.as_view(), name="log_list"),
 
 ]
