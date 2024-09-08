@@ -31,6 +31,11 @@ class MailingSettingsCreateView(CreateView):
         self.object.save()
         return super().form_valid(form)
 
+    def get_form_kwargs(self):
+        kwargs = super(MailingSettingsCreateView, self).get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
 
 class MailingSettingsDeleteView(DeleteView):
     model = MailingSettings

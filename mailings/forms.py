@@ -1,6 +1,7 @@
 from django import forms
 from django.forms import BooleanField
 
+from mailings import models
 from mailings.models import Message, Client, MailingSettings
 
 
@@ -22,7 +23,7 @@ class MessageForm(StyleFormMixin, forms.ModelForm):
 
     class Meta:
         model = Message
-        exclude = ('creator', )
+        exclude = ('creator',)
 
 
 class ClientForm(StyleFormMixin, forms.ModelForm):
@@ -31,7 +32,7 @@ class ClientForm(StyleFormMixin, forms.ModelForm):
 
     class Meta:
         model = Client
-        exclude = ('creator', )
+        exclude = ('creator',)
 
     def clean_first_name(self):
         """ Фильтрация запрещённых слов в названии """
@@ -61,7 +62,13 @@ class ClientForm(StyleFormMixin, forms.ModelForm):
 class MailingSettingsForm(StyleFormMixin, forms.ModelForm):
     """ Форма для рассылок """
 
+    def __init__(self, user, *args, **kwargs):
+        super(MailingSettingsForm, self).__init__(*args, **kwargs)
+        self.user = user
+        self.fields['message'].queryset = models.Message.objects.filter(creator=user)
+        self.fields['client'].queryset = models.Client.objects.filter(creator=user)
+
     class Meta:
         model = MailingSettings
         # fields = '__all__'
-        exclude = ('next_send_time', 'stop_at', 'creator', 'status', )
+        exclude = ('next_send_time', 'stop_at', 'creator', 'status',)
