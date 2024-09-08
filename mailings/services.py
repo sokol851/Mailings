@@ -47,11 +47,3 @@ def service_send_mails():
                 mailing.next_send_time += timedelta(days=30)
 
             mailing.save()
-
-
-def start_scheduler():
-    scheduler = BackgroundScheduler()
-    if not scheduler.get_jobs():
-        scheduler.add_job(service_send_mails, 'interval', seconds=10)
-    if not scheduler.running:
-        scheduler.start()

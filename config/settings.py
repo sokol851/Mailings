@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'mailings',
     'users',
     'django_apscheduler',
+    'blog',
 ]
 
 MIDDLEWARE = [
@@ -120,6 +121,7 @@ STATIC_URL = 'static/'
 
 STATICFILES_DIRS = (
     BASE_DIR / 'static',
+    BASE_DIR / 'blog' / 'static',
 )
 
 # Default primary key field type
