@@ -10,7 +10,11 @@ class MailingSettingsListView(ListView):
 
     def get_queryset(self, *args, **kwargs):
         queryset = super().get_queryset(*args, **kwargs)
-        queryset = queryset.filter(creator=self.request.user)
+        user = self.request.user
+        if user.is_superuser or user.has_perm('mailings.view_all_list'):
+            queryset = MailingSettings.objects.all()
+        else:
+            queryset = queryset.filter(creator=user)
         return queryset
 
 
@@ -18,6 +22,11 @@ class MailingSettingsUpdateView(UpdateView):
     model = MailingSettings
     form_class = MailingSettingsForm
     success_url = reverse_lazy('mailings:mailing_list')
+
+    def get_form_kwargs(self):
+        kwargs = super(MailingSettingsUpdateView, self).get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
 
 
 class MailingSettingsCreateView(CreateView):

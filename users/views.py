@@ -5,15 +5,24 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.core.mail import send_mail
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
 from django.views import View
-from django.views.generic import CreateView, UpdateView, DetailView, DeleteView, TemplateView, FormView
+from django.views.generic import CreateView, UpdateView, DetailView, DeleteView, TemplateView, FormView, ListView
 
 from users.forms import UserRegisterForm, UserProfileForm, CustomLoginForm, UserPasswordResetForm
 from users.models import User
 
 from config import settings
+
+
+class UserListView(ListView):
+    model = User
+
+    def get_queryset(self):
+        user = self.request.user
+        get_queryset = User.objects.exclude(email=user)
+        return get_queryset
 
 
 class RegisterView(CreateView):
@@ -97,6 +106,16 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
             user.last_name = 'Не указано'
         user.save()
         return super().form_valid(form)
+
+    @staticmethod
+    def toggle_activity(request, pk):
+        users_items = get_object_or_404(User, pk=pk)
+        if users_items.is_active:
+            users_items.is_active = False
+        else:
+            users_items.is_active = True
+        users_items.save()
+        return redirect(reverse('users:user_list'))
 
 
 class CustomLoginView(LoginView):

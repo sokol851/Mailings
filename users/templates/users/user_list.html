@@ -1,0 +1,30 @@
+{% extends 'mailings/base.html' %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <a href="{% url 'mailings:client_create'%}" type="button"
+                                   class="btn btn-dark form-control">Создать</a>
+        {% for object in object_list %}
+        <div class="col-12 mt-3">
+            <div class="card">
+                <div class="card-body">
+                    <p>ФИО: {{ object.last_name }} {{ object.first_name }}</p>
+                    <p>Email: {{ object.email }}</p>
+                    <p>Активен: {{ object.is_active }}</p>
+
+                    {% if perms.users.ban_user %} <!-- Проверка прав -->
+                    {% if object.is_active %} <!-- Проверка Boolean -->
+                    <a href="{% url 'users:toggle_activity_user' object.pk%}" type="button"
+                       class="btn form-control btn-danger">Деактивировать пользователя</a>
+                    {% else %}
+                    <a href="{% url 'users:toggle_activity_user' object.pk%}" type="button"
+                       class="btn form-control btn-warning">Активировать пользователя</a>
+                    {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

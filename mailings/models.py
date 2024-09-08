@@ -68,6 +68,10 @@ class MailingSettings(models.Model):
         verbose_name = 'Рассылка'
         verbose_name_plural = 'Рассылки'
         ordering = ['id']
+        permissions = [
+            ('Disabled_mailing', 'Disabled mailing'),
+            ('view_all_list', 'view all list'),
+        ]
 
     def save(self, *args, **kwargs):
         if not self.next_send_time:

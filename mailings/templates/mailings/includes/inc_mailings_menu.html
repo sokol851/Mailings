@@ -14,6 +14,7 @@
     <div class="container-fluid">
         <a class="navbar-brand" href="{% url 'mailings:index' %}">На главную</a>
     </div>
+    {% if user.is_authenticated %}
     <div class="container-fluid">
         <a class="navbar-brand" href="{% url 'mailings:mailing_list' %}">Рассылки</a>
     </div>
@@ -26,6 +27,13 @@
     <div class="container-fluid">
         <a class="navbar-brand" href="{% url 'mailings:log_list' %}">Лог</a>
     </div>
+
+    {% if perms.users.view_all_user %}
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'users:user_list' %}">Пользователи</a>
+    </div>
+    {% endif %}
+    {% endif %}
 
     <div class="container-fluid">
         {% if user.is_authenticated %}
