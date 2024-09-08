@@ -7,6 +7,7 @@
     Создать суперпользователя: "python manage.py csu"
         - логин: admin@pow.ru
         - пароль: 12345
+    Создать группу "Менеджера": "python manage.py fill_groups"
 
 ___
 ## Внимание!! 
