@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView
 
+from blog.models import Blog
 from mailings.models import MailingSettings, Client
 
 
@@ -32,4 +33,5 @@ class Index(TemplateView):
             context_data['active_mailings'] = count_mailings_works + count_mailings_created
             context_data['active_clients'] = clients.values('email').distinct().filter(
                 creator=self.request.user).count()
+            context_data['random_blogs'] = Blog.objects.all().order_by('-created_at')[:3]
         return context_data

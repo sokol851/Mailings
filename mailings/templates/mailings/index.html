@@ -1,7 +1,8 @@
 {% extends 'mailings/base.html' %}
 {% block content %}
+{% load tags %}
 {% if user.is_authenticated %}
-<div class="container form-control bg-secondary">
+<div class="container form-control bg-white">
     <div class="row">
         <div class="col-6">
             <div class="col-12 text-center form-control bg-secondary-subtle mb-1"><h3 class="mt-2">Ваша статистика</h3>
@@ -31,8 +32,31 @@
         </div>
     </div>
     <div class="row mt-3 mb-3">
-                    <div class="col-12 text-center"><a type="button" class="btn btn-warning form-control" href="{% url 'mailings:mailing_list' %}">Перейти к рассылкам</a></div>
+        <div class="col-12 text-center"><a type="button" class="btn btn-warning form-control"
+                                           href="{% url 'mailings:mailing_list' %}">Перейти к рассылкам</a></div>
+    </div>
+</div>
+<div class="container form-control bg-white mt-3">
+    <div class="row">
+        {% for object in random_blogs %}
+        <div class="row">
+                    <div class="col-6">
+                        Опубликовано: {{object.created_at}}
+                        <h2>{{object.title}}</h2>
+                        <a href="{% url 'blog:blog_detail' object.slug %}"><img width="400" height="300"
+                                                                                src="{%refactor object.image%}"
+                                                                                class="d-block w-30"></a>
+                    </div>
+                    <div class="col-6 mt-3">
+                        <h5>{{object.body | slice:"500"}}</h5>
+
+                    </div>
+                    <a href="{% url 'blog:blog_detail' object.slug %}" type="button"
+                       class="btn btn-warning form-control mt-3">Прочитать
+                    </a>
                 </div>
+        {% endfor %}
+    </div>
 </div>
 {% else %}
 <div class="container ">
