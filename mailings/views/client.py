@@ -59,7 +59,7 @@ class ClientDeleteView(LoginRequiredMixin, DeleteView):
 
     def get_object(self, queryset=None):
         self.object = super().get_object(queryset)
-        if self.request.user == self.object.owner or self.request.user.is_superuser:
+        if self.request.user == self.object.creator or self.request.user.is_superuser:
             return self.object
         raise PermissionDenied
 
