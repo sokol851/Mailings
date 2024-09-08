@@ -8,6 +8,11 @@ from mailings.models import Client
 class ClientListView(ListView):
     model = Client
 
+    def get_queryset(self, *args, **kwargs):
+        queryset = super().get_queryset(*args, **kwargs)
+        queryset = queryset.filter(creator=self.request.user)
+        return queryset
+
 
 class ClientUpdateView(UpdateView):
     model = Client
@@ -32,6 +37,12 @@ class ClientCreateView(CreateView):
     model = Client
     form_class = ClientForm
     success_url = reverse_lazy('mailings:client_list')
+
+    def form_valid(self, form):
+        self.object = form.save()
+        self.object.creator = self.request.user
+        self.object.save()
+        return super().form_valid(form)
 
 
 class ClientDeleteView(DeleteView):

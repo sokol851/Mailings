@@ -22,7 +22,7 @@ class MessageForm(StyleFormMixin, forms.ModelForm):
 
     class Meta:
         model = Message
-        fields = '__all__'
+        exclude = ('creator', )
 
 
 class ClientForm(StyleFormMixin, forms.ModelForm):
@@ -31,7 +31,7 @@ class ClientForm(StyleFormMixin, forms.ModelForm):
 
     class Meta:
         model = Client
-        fields = '__all__'
+        exclude = ('creator', )
 
     def clean_first_name(self):
         """ Фильтрация запрещённых слов в названии """
@@ -63,4 +63,5 @@ class MailingSettingsForm(StyleFormMixin, forms.ModelForm):
 
     class Meta:
         model = MailingSettings
-        fields = '__all__'
+        # fields = '__all__'
+        exclude = ('next_send_time', 'stop_at', 'creator', 'status', )

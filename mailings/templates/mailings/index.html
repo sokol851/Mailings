@@ -16,7 +16,7 @@
                     <div class="col-8 form-control"><h5>Сообщение</h5></div>
                 </div>
             </div>
-            <div class="col-12"><a type="button" class="btn btn-dark form-control" href="#">Выйти</a></div>
+            <div class="col-12"><a type="button" class="btn btn-dark form-control" href="{% url 'users:logout' %}">Выйти</a></div>
         </div>
     </div>
 </div>
@@ -27,8 +27,8 @@
             <div class="container text-center ">
                 <div class="row mb-3">
                     <div class="col-12 mt-3 mb-3"><h2>Войдите или зарегистрируйтесь!</h2></div>
-                    <div class="col-6"><a type="button" class="btn btn-dark form-control" href="#">Войти</a></div>
-                    <div class="col-6"><a type="button" class="btn btn-dark form-control" href="#">Регистрация</a></div>
+                    <div class="col-6"><a type="button" class="btn btn-dark form-control" href="{% url 'users:login' %}">Войти</a></div>
+                    <div class="col-6"><a type="button" class="btn btn-dark form-control" href="{% url 'users:user_register' %}">Регистрация</a></div>
                 </div>
             </div>
         </div>

@@ -13,6 +13,7 @@ class Client(models.Model):
     last_name = models.CharField(max_length=100, **NULLABLE, default='Не указано', verbose_name='Фамилия')
     patronymic = models.CharField(max_length=100, **NULLABLE, default='Не указано', verbose_name='Отчество')
     comment = models.CharField(max_length=50, **NULLABLE, default='Не указано', verbose_name='Комментарий')
+    creator = models.ForeignKey(User, max_length=150, **NULLABLE, on_delete=models.SET_NULL, verbose_name='Создатель')
 
     def __str__(self):
         return f'{self.email}'
@@ -25,6 +26,7 @@ class Client(models.Model):
 class Message(models.Model):
     theme = models.CharField(max_length=150, verbose_name='Тема письма')
     body = models.TextField(verbose_name='Тело письма')
+    creator = models.ForeignKey(User, max_length=150, **NULLABLE, on_delete=models.SET_NULL, verbose_name='Создатель')
 
     def __str__(self):
         return f'{self.theme}: {self.body}'
@@ -84,6 +86,7 @@ class MailingLog(models.Model):
     response = models.TextField(**NULLABLE, verbose_name='Ответ почтового сервера')
     mailing = models.ForeignKey(MailingSettings, on_delete=models.CASCADE, verbose_name='Рассылка',
                                 related_name='mailing_log')
+    creator = models.ForeignKey(User, max_length=150, **NULLABLE, on_delete=models.SET_NULL, verbose_name='Создатель')
 
     def __str__(self):
         return f'Статус на {self.last_attempt} - {self.status_attempt}.'

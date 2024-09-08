@@ -8,6 +8,11 @@ from mailings.models import MailingSettings
 class MailingSettingsListView(ListView):
     model = MailingSettings
 
+    def get_queryset(self, *args, **kwargs):
+        queryset = super().get_queryset(*args, **kwargs)
+        queryset = queryset.filter(creator=self.request.user)
+        return queryset
+
 
 class MailingSettingsUpdateView(UpdateView):
     model = MailingSettings
@@ -19,6 +24,12 @@ class MailingSettingsCreateView(CreateView):
     model = MailingSettings
     form_class = MailingSettingsForm
     success_url = reverse_lazy('mailings:mailing_list')
+
+    def form_valid(self, form):
+        self.object = form.save()
+        self.object.creator = self.request.user
+        self.object.save()
+        return super().form_valid(form)
 
 
 class MailingSettingsDeleteView(DeleteView):

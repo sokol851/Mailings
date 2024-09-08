@@ -33,9 +33,11 @@ def service_send_mails():
                     fail_silently=False
                 )
 
-                MailingLog.objects.create(status_attempt=MailingLog.SUCCESS, response=response, mailing=mailing)
+                MailingLog.objects.create(status_attempt=MailingLog.SUCCESS, response=response, mailing=mailing,
+                                          creator=mailing.creator)
             except smtplib.SMTPException as error:
-                MailingLog.objects.create(status_attempt=MailingLog.ERROR, response=str(error), mailing=mailing)
+                MailingLog.objects.create(status_attempt=MailingLog.ERROR, response=str(error), mailing=mailing,
+                                          creator=mailing.creator)
 
             if mailing.periodicity == MailingSettings.EVERY_DAY:
                 mailing.next_send_time += timedelta(days=1)

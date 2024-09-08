@@ -26,4 +26,36 @@
     <div class="container-fluid">
         <a class="navbar-brand" href="{% url 'mailings:log_list' %}">Лог</a>
     </div>
+
+    <div class="container-fluid">
+        {% if user.is_authenticated %}
+
+        <div class="col-6">
+            <hr>
+            <a class="navbar-brand" href="{% url 'users:logout' %}">Выйти</a>
+            <hr>
+        </div>
+
+        <div class="col-6">
+            <hr>
+            <a class="navbar-brand" href="{% url 'users:user_detail' pk=user.pk %}">Профиль</a>
+            <hr>
+        </div>
+
+        {% else %}
+
+        <div class="col-6">
+            <hr>
+            <a class="navbar-brand" href="{% url 'users:login' %}">Войти</a>
+            <hr>
+        </div>
+        <div class="col-6">
+            <hr>
+            <a class="navbar-brand" href="{% url 'users:user_register' %}">Регистрация</a>
+            <hr>
+        </div>
+
+        {% endif %}
+
+    </div>
 </nav>

@@ -7,6 +7,7 @@ from config.settings import DEFAULT_AUTO_FIELD
 
 class MailingsConfig(AppConfig):
     default_auto_field = DEFAULT_AUTO_FIELD
+    verbose_name = 'Рассылка'
     name = 'mailings'
 
     def ready(self):
