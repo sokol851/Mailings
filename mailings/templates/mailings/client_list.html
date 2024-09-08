@@ -1,0 +1,26 @@
+{% extends 'mailings/base.html' %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <a href="{% url 'mailings:client_create'%}" type="button"
+                                   class="btn btn-dark form-control">Создать</a>
+        {% for object in object_list %}
+        <div class="col-4 mt-3">
+            <div class="card">
+                <div class="card-body">
+                    <p>{{ object.last_name }} {{ object.first_name }} {% if object.patronymic != "Не указано" %} {{ object.patronymic }} {% endif %}</p>
+                    <p>{{ object.email }}</p>
+                    <p>Комментарий: {{ object.comment }}</p>
+                    <a href="{% url 'mailings:client_detail' object.pk %}" type="button"
+                                   class="btn btn-dark form-control mb-3">Открыть</a>
+                    <a href="{% url 'mailings:client_edit' object.pk %}" type="button"
+                                   class="btn btn-dark form-control mb-3">Редактировать</a>
+                    <a href="{% url 'mailings:client_delete' object.pk %}" type="button"
+                                   class="btn btn-dark form-control">Удалить</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

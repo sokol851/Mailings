@@ -1,0 +1,17 @@
+{% extends 'mailings/base.html' %}
+{% block content %}
+<form class="row bg-secondary-subtle text-body-color" method="post" enctype="multipart/form-data">
+
+    <div class="card col-12 bg-secondary-subtle">
+        <div class="card-header bg-secondary-subtle">
+            <h3 class="card-title">
+                {{ title }}
+            </h3>
+        </div>
+        <div class="mt-4 alert alert-success form-control"><h4>{{ message }}</h4></div>
+        <div class="mb-4 mt-4">
+            <a href='{%url "users:login"%}' type="submit" class="btn btn-warning form-control">Авторизоваться</a>
+        </div>
+    </div>
+</form>
+{% endblock %}

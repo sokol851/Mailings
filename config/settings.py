@@ -39,6 +39,8 @@ INSTALLED_APPS = [
 
     'mailings',
     'users',
+    'django_apscheduler',
+    'blog',
 ]
 
 MIDDLEWARE = [
@@ -119,6 +121,7 @@ STATIC_URL = 'static/'
 
 STATICFILES_DIRS = (
     BASE_DIR / 'static',
+    BASE_DIR / 'blog' / 'static',
 )
 
 # Default primary key field type
@@ -147,12 +150,15 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 SITE_URL = config("SITE_URL")
 
-# CACHE_ENABLED = config('CACHE_ENABLED') == "True"
-#
-# if CACHE_ENABLED:
-#     CACHES = {
-#         "default": {
-#             "BACKEND": "django.core.cache.backends.redis.RedisCache",
-#             "LOCATION": config('LOCATION_REDIS'),
-#         }
-#     }
+CACHE_ENABLED = config('CACHE_ENABLED') == "True"
+
+if CACHE_ENABLED:
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.redis.RedisCache",
+            "LOCATION": config('LOCATION_REDIS'),
+        }
+    }
+
+APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
+APSCHEDULER_RUN_NOW_TIMEOUT = 25

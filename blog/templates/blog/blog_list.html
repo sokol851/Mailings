@@ -1,0 +1,47 @@
+{% extends 'mailings/base.html' %}
+{% load tags %}
+{% block content %}
+<div class="card bg-secondary-subtle text-body-color mb-3">
+    <a href="{% url 'blog:blog_create' %}" type="button" class="btn btn-warning">Добавить запись</a>
+    {%for object in object_list%}
+    <div class="card mb-2">
+        <div class="card-body">
+            <center>
+                <div class="row">
+                    <div class="col-6">
+                        Опубликовано: {{object.created_at}}
+                        <h2>{{object.title}}</h2>
+                        <a href="{% url 'blog:blog_detail' object.slug %}">
+                            <img width="400" height="300" src="{%refactor object.image%}"
+                                 class="img-fluid  mx-auto d-block"
+                                 style="width: auto; max-height: 350px;">
+                        </a>
+                    </div>
+                    <div class="col-6 mt-3">
+                        <h5>{{object.body | slice:"500"}}</h5>
+
+                    </div>
+                    <a href="{% url 'blog:blog_detail' object.slug %}" type="button"
+                       class="btn btn-warning form-control mt-3">Прочитать
+                    </a>
+                </div>
+            </center>
+        </div>
+        <div class="row">
+            <div class="col-12 mb-3">
+                {% if user.is_superuser %} <!-- Проверка прав -->
+                {% if object.is_published %} <!-- Проверка Boolean -->
+                <a href="{% url 'blog:toggle_activity_blog' object.pk%}" type="button"
+                   class="btn form-control btn-danger">Деактивировать товар</a>
+                {% else %}
+                <a href="{% url 'blog:toggle_activity_blog' object.pk%}" type="button"
+                   class="btn form-control btn-warning">Активировать товар</a>
+                {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {%endfor%}
+</div>
+
+{% endblock %}

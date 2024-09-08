@@ -1,0 +1,63 @@
+{% extends 'mailings/base.html' %}
+{% load tags %}
+{% block content %}
+<div class="card bg-secondary-subtle text-body-color mb-3">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-6">
+                <img width="450" height="400" src="{% refactor object.image %}" class="img-fluid mx-auto d-block"
+                     style="width: auto; max-height: 350px;">
+            </div>
+            <div class="col-6">
+                <div class="row">
+                    Заголовок:
+                    <h5 class="card-title mt-3 form-control col-6">{{object.title}}</h5>
+                    Опубликовано:
+                    <h5 class="card-title mt-3 form-control">{{object.created_at}}</h5>
+                    Просмотров:
+                    <h5 class="card-title mt-3 form-control">{{object.count_views}}</h5>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 mt-3">
+                Контент:
+                <h5 class="card-title mt-3 form-control">{{object.body}}</h5>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if user == object.owner or user.is_superuser %}
+<div class="card-body">
+    <div class="row">
+        <div class="col-6">
+            <a href="{% url 'blog:blog_update' object.slug %}" type="button" class="btn btn-dark form-control">Редактировать</a>
+        </div>
+        <div class="col-6">
+            <a href="{% url 'blog:blog_delete' object.slug %}" type="button"
+               class="btn btn-dark form-control">Удалить</a>
+        </div>
+    </div>
+</div>
+{% endif %}
+<div class="row">
+    <div class="col-12 mt-3">
+        <a href="{% url 'blog:blog_list' %}" type="button" class="btn btn-warning form-control">Назад</a>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12 mt-3">
+        {% if user.is_superuser %} <!-- Проверка прав -->
+        {% if object.is_published %} <!-- Проверка Boolean -->
+        <a href="{% url 'blog:toggle_activity_blog' object.pk%}" type="button"
+           class="btn form-control btn-danger">Деактивировать товар</a>
+        {% else %}
+        <a href="{% url 'blog:toggle_activity_blog' object.pk%}" type="button"
+           class="btn form-control btn-warning">Активировать товар</a>
+        {% endif %}
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

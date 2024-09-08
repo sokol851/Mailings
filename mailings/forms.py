@@ -1,6 +1,7 @@
 from django import forms
 from django.forms import BooleanField
 
+from mailings import models
 from mailings.models import Message, Client, MailingSettings
 
 
@@ -18,24 +19,57 @@ class StyleFormMixin:
 
 
 class MessageForm(StyleFormMixin, forms.ModelForm):
-    """ Форма для версий """
+    """ Форма для сообщений """
 
     class Meta:
         model = Message
-        fields = '__all__'
+        exclude = ('creator',)
 
 
 class ClientForm(StyleFormMixin, forms.ModelForm):
-    """ Форма для версий """
+    """ Форма для клиентов """
+    list_stop_word = ['Не указано', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0']
 
     class Meta:
         model = Client
-        fields = '__all__'
+        exclude = ('creator',)
+
+    def clean_first_name(self):
+        """ Фильтрация запрещённых слов в названии """
+        clean_data = self.cleaned_data['first_name']
+
+        if clean_data is None:
+            raise forms.ValidationError('Имя не может быть пустым или иметь цифры')
+        else:
+            for word in self.list_stop_word:
+                if word.lower() in clean_data.lower():
+                    raise forms.ValidationError('Имя не может быть пустым или иметь цифры')
+        return clean_data
+
+    def clean_last_name(self):
+        """ Фильтрация запрещённых слов в названии """
+        clean_data = self.cleaned_data['last_name']
+
+        if clean_data is None:
+            raise forms.ValidationError('Фамилия не может быть пустым или иметь цифры')
+        else:
+            for word in self.list_stop_word:
+                if word.lower() in clean_data.lower():
+                    raise forms.ValidationError('Фамилия не может быть пустым или иметь цифры')
+        return clean_data
 
 
 class MailingSettingsForm(StyleFormMixin, forms.ModelForm):
-    """ Форма для версий """
+    """ Форма для рассылок """
+
+    def __init__(self, user, *args, **kwargs):
+        super(MailingSettingsForm, self).__init__(*args, **kwargs)
+        self.user = user
+        if not user.is_superuser:
+            self.fields['message'].queryset = models.Message.objects.filter(creator=user)
+            self.fields['client'].queryset = models.Client.objects.filter(creator=user)
 
     class Meta:
         model = MailingSettings
-        fields = '__all__'
+        # fields = '__all__'
+        exclude = ('next_send_time', 'stop_at', 'creator', 'status',)

@@ -1,0 +1,15 @@
+{% extends 'mailings/base.html' %}
+{% block content %}
+<form class="bg-secondary-subtle text-body-color mb-3 form-control" method="post">
+    <div class="row">
+        {% if object %}
+        <center><h5>Редактор клиента</h5></center>
+        {% else %}
+        <center><h5>Создание клиента</h5></center>
+        {% endif %}
+    </div>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-warning form-control">Отправить</button>
+</form>
+{% endblock %}

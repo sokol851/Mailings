@@ -1,0 +1,50 @@
+{% extends 'mailings/base.html' %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <a href="{% url 'mailings:mailing_create'%}" type="button"
+                                   class="btn btn-dark form-control">Создать</a>
+        {% for object in object_list %}
+        <div class="col-12 mt-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-6">
+                    <p>{{ object.name }}</p>
+                    <p>Начало рассылки: {{ object.start_at }}</p>
+                    <p>Конец рассылки: {{ object.stop_at }}</p>
+                    <p>Следующая рассылки: {{ object.next_send_time }}</p>
+                    <p>Периодичность: {{ object.periodicity }}</p>
+                    <p>Статус: {{ object.status }}</p>
+                    <p>Тема сообщения: {{ object.message.theme }}</p>
+                    <p>Клиенты: {{ object.client.all|join:', ' }}</p>
+                    <p>Создатель: {{ object.creator }}</p>
+                            </div>
+                        <div class="col-6">
+                    {% if object.creator == user or user.is_superuser%}
+                    <a href="{% url 'mailings:mailing_detail' object.pk %}" type="button"
+                                   class="btn btn-success form-control mb-3">Открыть</a>
+                    <a href="{% url 'mailings:mailing_edit' object.pk %}" type="button"
+                                   class="btn btn-warning form-control mb-3">Редактировать</a>
+                    <a href="{% url 'mailings:mailing_delete' object.pk %}" type="button"
+                                   class="btn btn-danger form-control">Удалить</a>
+                    {% endif %}
+
+
+                    {% if perms.mailings.Disabled_mailing %} <!-- Проверка прав -->
+                    {% if object.status == 'Создана' or object.status == 'В работе'%}
+                    <a href="{% url 'mailings:edit_status_mailing' object.pk%}" type="button"
+                       class="btn form-control btn-danger mt-3">Завершить рассылку</a>
+                    {% else %}
+                    <a href="{% url 'mailings:edit_status_mailing' object.pk%}" type="button"
+                       class="btn form-control btn-warning mt-3">Вернуть в работу</a>
+                    {% endif %}
+                    {% endif %}
+                            </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
