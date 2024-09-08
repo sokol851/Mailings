@@ -2,7 +2,11 @@
 {% block content %}
 <form class="bg-secondary-subtle text-body-color mb-3 form-control" method="post">
     <div class="row">
-        <center><h5>Редактор рассылок</h5></center>
+        {% if object %}
+        <center><h5>Редактор рассылки</h5></center>
+        {% else %}
+        <center><h5>Создание рассылки</h5></center>
+        {% endif %}
     </div>
     {% csrf_token %}
     {{ form.as_p }}
