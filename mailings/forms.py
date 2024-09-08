@@ -65,8 +65,9 @@ class MailingSettingsForm(StyleFormMixin, forms.ModelForm):
     def __init__(self, user, *args, **kwargs):
         super(MailingSettingsForm, self).__init__(*args, **kwargs)
         self.user = user
-        self.fields['message'].queryset = models.Message.objects.filter(creator=user)
-        self.fields['client'].queryset = models.Client.objects.filter(creator=user)
+        if not user.is_superuser:
+            self.fields['message'].queryset = models.Message.objects.filter(creator=user)
+            self.fields['client'].queryset = models.Client.objects.filter(creator=user)
 
     class Meta:
         model = MailingSettings

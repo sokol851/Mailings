@@ -1,3 +1,5 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.urls import reverse_lazy
 from django.views.generic import ListView, UpdateView, CreateView, DeleteView, DetailView
 
@@ -5,7 +7,7 @@ from mailings.forms import ClientForm
 from mailings.models import Client
 
 
-class ClientListView(ListView):
+class ClientListView(LoginRequiredMixin, ListView):
     model = Client
 
     def get_queryset(self, *args, **kwargs):
@@ -14,10 +16,16 @@ class ClientListView(ListView):
         return queryset
 
 
-class ClientUpdateView(UpdateView):
+class ClientUpdateView(LoginRequiredMixin, UpdateView):
     model = Client
     form_class = ClientForm
     success_url = reverse_lazy('mailings:client_list')
+
+    def get_object(self, queryset=None):
+        self.object = super().get_object(queryset)
+        if self.request.user == self.object.creator or self.request.user.is_superuser:
+            return self.object
+        raise PermissionDenied
 
     def form_valid(self, form):
         user = form.save()
@@ -33,7 +41,7 @@ class ClientUpdateView(UpdateView):
         return super().form_valid(form)
 
 
-class ClientCreateView(CreateView):
+class ClientCreateView(LoginRequiredMixin, CreateView):
     model = Client
     form_class = ClientForm
     success_url = reverse_lazy('mailings:client_list')
@@ -45,10 +53,16 @@ class ClientCreateView(CreateView):
         return super().form_valid(form)
 
 
-class ClientDeleteView(DeleteView):
+class ClientDeleteView(LoginRequiredMixin, DeleteView):
     model = Client
     success_url = reverse_lazy('mailings:client_list')
 
+    def get_object(self, queryset=None):
+        self.object = super().get_object(queryset)
+        if self.request.user == self.object.owner or self.request.user.is_superuser:
+            return self.object
+        raise PermissionDenied
 
-class ClientDetailView(DetailView):
+
+class ClientDetailView(LoginRequiredMixin, DetailView):
     model = Client

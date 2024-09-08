@@ -1,9 +1,10 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView
 
 from mailings.models import MailingLog
 
 
-class MailingLogListView(ListView):
+class MailingLogListView(LoginRequiredMixin, ListView):
     model = MailingLog
 
     def form_valid(self, form):

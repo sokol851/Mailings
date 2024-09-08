@@ -16,7 +16,7 @@ from users.models import User
 from config import settings
 
 
-class UserListView(ListView):
+class UserListView(LoginRequiredMixin, ListView):
     model = User
 
     def get_queryset(self):
