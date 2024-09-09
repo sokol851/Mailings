@@ -1,7 +1,7 @@
-from django.shortcuts import render
 from django.views.generic import TemplateView
 
 from blog.models import Blog
+from blog.services import get_data_from_cache
 from mailings.models import MailingSettings, Client
 
 
@@ -15,6 +15,7 @@ class Index(TemplateView):
         context_data = super().get_context_data(**kwargs)
         # Проверяем аутентификацию
         if self.request.user.is_authenticated:
+
             # Получение личной статистики
             mailings = MailingSettings.objects.all()
             clients = Client.objects.all()
@@ -33,5 +34,8 @@ class Index(TemplateView):
             context_data['active_mailings'] = count_mailings_works + count_mailings_created
             context_data['active_clients'] = clients.values('email').distinct().filter(
                 creator=self.request.user).count()
-            context_data['random_blogs'] = Blog.objects.all().order_by('-created_at')[:3]
+
+            # Список блогов из кэша
+            context_data['random_blogs'] = get_data_from_cache(Blog, 'blog_list').order_by('?')[:3]
+
         return context_data

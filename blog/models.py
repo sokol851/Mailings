@@ -15,3 +15,10 @@ class Blog(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
     owner = models.ForeignKey(User, verbose_name='Владелец', on_delete=models.SET_NULL, **NULLABLE)
     slug = models.CharField(max_length=100, verbose_name="slug", null=True, blank=True)
+
+    class Meta:
+        verbose_name = 'Блог'
+        verbose_name_plural = 'Блоги'
+
+    def __str__(self):
+        return f'{self.title}'

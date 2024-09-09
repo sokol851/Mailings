@@ -37,26 +37,25 @@
     </div>
 </div>
 <div class="container form-control bg-white mt-3">
+    {% for object in random_blogs %}
     <div class="row">
-        {% for object in random_blogs %}
-        <div class="row">
-                    <div class="col-6">
-                        Опубликовано: {{object.created_at}}
-                        <h2>{{object.title}}</h2>
-                        <a href="{% url 'blog:blog_detail' object.slug %}"><img width="400" height="300"
-                                                                                src="{%refactor object.image%}"
-                                                                                class="d-block w-30"></a>
-                    </div>
-                    <div class="col-6 mt-3">
-                        <h5>{{object.body | slice:"500"}}</h5>
-
-                    </div>
-                    <a href="{% url 'blog:blog_detail' object.slug %}" type="button"
-                       class="btn btn-warning form-control mt-3">Прочитать
-                    </a>
-                </div>
-        {% endfor %}
+        <div class="col-6">
+            Опубликовано: {{object.created_at}}
+            <h2>{{object.title}}</h2>
+            <a href="{% url 'blog:blog_detail' object.slug %}"><img width="400" height="300"
+                                                                    src="{%refactor object.image%}"
+                                                                    class="d-block w-30"></a>
+        </div>
+        <div class="col-6 mt-3">
+            <h5>{{object.body | slice:"500"}}</h5>
+        </div>
     </div>
+    <div class="col-12 mb-3">
+        <a href="{% url 'blog:blog_detail' object.slug %}" type="button"
+           class="btn btn-warning form-control mt-3">Прочитать
+        </a>
+    </div>
+    {% endfor %}
 </div>
 {% else %}
 <div class="container ">

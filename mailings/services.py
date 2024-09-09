@@ -2,7 +2,6 @@ import smtplib
 from datetime import datetime, timedelta
 
 import pytz
-from apscheduler.schedulers.background import BackgroundScheduler
 from django.core.mail import send_mail
 
 from config import settings
