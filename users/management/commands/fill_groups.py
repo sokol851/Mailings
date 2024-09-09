@@ -42,41 +42,13 @@ class Command(BaseCommand):
                 name='Disabled mailing',
                 content_type=content_type_mailings
             )[0],
-            Permission.objects.get_or_create(
-                codename='add_blog',
-                name='Can add blog',
-                content_type=content_type_blog
-            )[0],
-            Permission.objects.get_or_create(
-                codename='change_blog',
-                name='Can change blog',
-                content_type=content_type_blog
-            )[0],
-            Permission.objects.get_or_create(
-                codename='delete_blog',
-                name='Can delete blog',
-                content_type=content_type_blog
-            )[0],
-            Permission.objects.get_or_create(
-                codename='view_blog',
-                name='Can view blog',
-                content_type=content_type_blog
-            )[0],
-            Permission.objects.get_or_create(
-                codename='view_client',
-                name='Can view Клиент',
-                content_type=content_type_client
-            )[0],
-            Permission.objects.get_or_create(
-                codename='view_mailingsettings',
-                name='Can view Рассылка',
-                content_type=content_type_mailings
-            )[0],
-            Permission.objects.get_or_create(
-                codename='view_message',
-                name='Can view Сообщение',
-                content_type=content_type_message
-            )[0],
+            Permission.objects.get(codename='add_blog'),
+            Permission.objects.get(codename='change_blog'),
+            Permission.objects.get(codename='delete_blog'),
+            Permission.objects.get(codename='view_blog'),
+            Permission.objects.get(codename='view_client'),
+            Permission.objects.get(codename='view_mailingsettings'),
+            Permission.objects.get(codename='view_message'),
         ]
 
         # Назначаем права группе

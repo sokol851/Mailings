@@ -1,4 +1,6 @@
+{% load cache %}
 {% load static %}
+{% cache 60 base_top %}
 <!doctype html>
 <html lang="en">
 <head>
@@ -23,10 +25,10 @@
             {% include 'mailings/includes/inc_mailings_menu.html'%}
         </div>
         <div class="col-9">
-
+{% endcache %}
             {% block content %}
             {% endblock %}
-
+{% cache 60 base_bottom %}
         </div>
     </div>
 </div>
@@ -40,3 +42,4 @@
 <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 </body>
 </html>
+{% endcache %}

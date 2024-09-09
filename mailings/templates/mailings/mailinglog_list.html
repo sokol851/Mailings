@@ -1,18 +1,39 @@
 {% extends 'mailings/base.html' %}
 {% block content %}
+<div class="container mt-1 mb-3">
+    <div class="row">
+        <div class="col-12 form-control text-center "><h3>История рассылок</h3></div>
+    </div>
+</div>
 <div class="container">
     <div class="row">
-        {% for object in object_list %}
-        <div class="col-4 mt-3">
-            <div class="card">
-                <div class="card-body">
-                    <p>Попытка: {{ object.last_attempt }}</p>
-                    <p>Статус: {{ object.status_attempt }}</p>
-                    <p>Тема: {{ object.mailing.message.theme }}</p>
-                </div>
-            </div>
+        <div class="col-12 form-control text-center">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Рассылка</th>
+                    <th scope="col">Тема сообщения</th>
+                    <th scope="col">Попытка</th>
+                    <th scope="col">Статус</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for object in object_list %}
+                <tr>
+                    <td><a href="{% url 'mailings:mailing_detail' object.mailing.pk %}"
+                           class="link-secondary link-underline-opacity-0">{{ object.mailing.name }}</a></td>
+                    <td>{{ object.mailing.message.theme }}</td>
+                    <td>{{ object.last_attempt }}</td>
+                    {% if object.status_attempt == 'Успешно' %}
+                    <td class="table-success">{{ object.status_attempt }}</td>
+                    {% else %}
+                    <td class="table-danger">{{ object.status_attempt }}</td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
         </div>
-        {% endfor %}
     </div>
 </div>
 {% endblock %}

@@ -15,5 +15,5 @@ class MailingLogListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self, *args, **kwargs):
         queryset = super().get_queryset(*args, **kwargs)
-        queryset = queryset.filter(creator=self.request.user)
+        queryset = queryset.filter(creator=self.request.user).order_by('last_attempt')
         return queryset
