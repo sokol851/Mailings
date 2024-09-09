@@ -30,8 +30,7 @@
                                    class="btn btn-danger form-control">Удалить</a>
                     {% endif %}
 
-
-                    {% if perms.mailings.Disabled_mailing %} <!-- Проверка прав -->
+                    {% if perms.mailings.Disabled_mailing or object.creator == user %} <!-- Проверка прав -->
                     {% if object.status == 'Создана' or object.status == 'В работе'%}
                     <a href="{% url 'mailings:edit_status_mailing' object.pk%}" type="button"
                        class="btn form-control btn-danger mt-3">Завершить рассылку</a>
