@@ -16,7 +16,7 @@
                     <p>Статус: {{ object.status }}</p>
                     <p>Тема сообщения: {{ object.message.theme }}</p>
                     <p>Сообщение: {{ object.message.body }}</p>
-                    <p>Клиенты: {{ object.client.all|join:', ' }}</p>
+                    <p>Клиенты: {{ object.client.all|join:', ' }} </p>
                     <p>Создатель: {{ object.creator }}</p>
                 </div>
                 <a href="{% url 'mailings:mailing_list' %}" class="btn btn-warning form-control">Назад</a>

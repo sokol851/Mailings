@@ -1,5 +1,4 @@
 {% extends 'mailings/base.html' %}
-{% load tags %}
 {% block content %}
 <div class="card bg-secondary-subtle text-body-color mb-3">
     <a href="{% url 'blog:blog_create' %}" type="button" class="btn btn-warning">Добавить запись</a>
@@ -12,7 +11,7 @@
                         Опубликовано: {{object.created_at}}
                         <h2>{{object.title}}</h2>
                         <a href="{% url 'blog:blog_detail' object.slug %}">
-                            <img width="400" height="300" src="{%refactor object.image%}"
+                            <img width="400" height="300" src="{{object.image.url}}"
                                  class="img-fluid  mx-auto d-block"
                                  style="width: auto; max-height: 350px;">
                         </a>
