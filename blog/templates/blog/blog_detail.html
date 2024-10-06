@@ -1,11 +1,10 @@
 {% extends 'mailings/base.html' %}
-{% load tags %}
 {% block content %}
 <div class="card bg-secondary-subtle text-body-color mb-3">
     <div class="card-body">
         <div class="row">
             <div class="col-6">
-                <img width="450" height="400" src="{% refactor object.image %}" class="img-fluid mx-auto d-block"
+                <img width="450" height="400" src="{{object.image.url}}" class="img-fluid mx-auto d-block"
                      style="width: auto; max-height: 350px;">
             </div>
             <div class="col-6">
